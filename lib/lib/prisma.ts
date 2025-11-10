@@ -17,4 +17,5 @@ if (process.env.DATABASE_URL?.startsWith("libsql://")) {
   prisma = new PrismaClient();
 }
 
-export { prisma };
+export default prisma;
+
