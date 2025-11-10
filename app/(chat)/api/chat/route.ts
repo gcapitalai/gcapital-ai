@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { geolocation } from "@vercel/functions";
 import {
   convertToModelMessages,
