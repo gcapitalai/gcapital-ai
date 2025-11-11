@@ -1,22 +1,26 @@
 {
-  "name": "ai-chatbot",
-  "version": "3.1.0",
+  "name": "gcapital-ai",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/core": "^0.23.0",
+    "@auth/nextjs": "0.13.0",
+    "@libsql/client": "^0.6.0",
+    "@tailwindcss/postcss": "^4.0.0",
     "next": "15.0.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "next-auth": "5.0.0-beta.25",
-    "@libsql/client": "^0.6.0",
-    "@prisma/adapter-libsql": "^5.15.0",
-    "@prisma/client": "^5.15.0",
     "bcrypt-ts": "^5.0.3",
+    "sonner": "^1.5.0",
+    "geist": "^1.3.1"
+  },
+  "devDependencies": {
     "typescript": "^5.3.3",
     "eslint": "8.57.0"
   },
