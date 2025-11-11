@@ -12,11 +12,10 @@
     "next": "15.0.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "next-auth": "5.0.0-beta.25",
     "@libsql/client": "^0.6.0",
     "@prisma/adapter-libsql": "^5.15.0",
     "@prisma/client": "^5.15.0",
-    "@auth/core": "^0.23.0",
-    "@auth/nextjs": "^1.3.0",
     "bcrypt-ts": "^5.0.3",
     "typescript": "^5.3.3",
     "eslint": "8.57.0"
