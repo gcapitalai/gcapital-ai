@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { createUIMessageStream, JsonToSseTransformStream } from "ai";
 import { differenceInSeconds } from "date-fns";
 import { auth } from "@/app/(auth)/auth";
