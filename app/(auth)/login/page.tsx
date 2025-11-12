@@ -5,44 +5,35 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useActionState, useEffect, useState } from "react";
 
-import { AuthForm } from "@/components/auth-form";
-import { SubmitButton } from "@/components/submit-button";
-import { toast } from "@/components/toast";
+import { AuthForm } from "@/components/ui/auth-form";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { Toast } from "@/components/ui/toast";
 import { type LoginActionState, login } from "../actions";
 
 export default function Page() {
   const router = useRouter();
+  const { update: updateSession } = useSession();
 
   const [email, setEmail] = useState("");
   const [isSuccessful, setIsSuccessful] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const [state, formAction] = useActionState<LoginActionState, FormData>(
     login,
-    {
-      status: "idle",
-    }
+    { status: "idle" }
   );
-
-  const { update: updateSession } = useSession();
 
   useEffect(() => {
     if (state.status === "failed") {
-      toast({
-        type: "error",
-        description: "Invalid credentials!",
-      });
+      setToastMessage("Invalid credentials!");
     } else if (state.status === "invalid_data") {
-      toast({
-        type: "error",
-        description: "Failed validating your submission!",
-      });
+      setToastMessage("Failed validating your submission!");
     } else if (state.status === "success") {
       setIsSuccessful(true);
       updateSession();
       router.refresh();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.status]);
+  }, [state.status, updateSession, router]);
 
   const handleSubmit = (formData: FormData) => {
     setEmail(formData.get("email") as string);
@@ -58,6 +49,7 @@ export default function Page() {
             Use your email and password to sign in
           </p>
         </div>
+
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
           <p className="mt-4 text-center text-gray-600 text-sm dark:text-zinc-400">
@@ -71,6 +63,8 @@ export default function Page() {
             {" for free."}
           </p>
         </AuthForm>
+
+        {toastMessage && <Toast message={toastMessage} />}
       </div>
     </div>
   );
