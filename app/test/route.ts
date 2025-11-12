@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
-export const runtime = "edge"; // 👈 Esto es lo que Render necesita
+export const runtime = "edge"; // Render necesita este runtime
 
 export async function GET() {
   try {
@@ -9,6 +9,7 @@ export async function GET() {
     if (error) throw error;
     return NextResponse.json({ ok: true, data });
   } catch (error: any) {
+    console.error("Supabase fetch error:", error);
     return NextResponse.json({ ok: false, error: error.message });
   }
 }
