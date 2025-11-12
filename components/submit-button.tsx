@@ -1,64 +1,36 @@
 "use client";
 
-import { Input } from "./input";
-import { Label } from "./label";
+import { useFormStatus } from "react-dom";
+import { Loader2 } from "lucide-react"; // Ícono de carga
+import { Button } from "./button"; // Import directo desde la misma carpeta
 
-export function AuthForm({
-  action,
+export function SubmitButton({
   children,
-  defaultEmail = "",
+  isSuccessful,
 }: {
-  action: (formData: FormData) => void | Promise<void>;
   children: React.ReactNode;
-  defaultEmail?: string;
+  isSuccessful: boolean;
 }) {
+  const { pending } = useFormStatus();
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        action(new FormData(e.currentTarget));
-      }}
-      className="flex flex-col gap-4 px-4 sm:px-16"
+    <Button
+      aria-disabled={pending || isSuccessful}
+      className="relative"
+      disabled={pending || isSuccessful}
+      type={pending ? "button" : "submit"}
     >
-      <div className="flex flex-col gap-2">
-        <Label
-          className="font-normal text-zinc-600 dark:text-zinc-400"
-          htmlFor="email"
-        >
-          Email Address
-        </Label>
-
-        <Input
-          autoComplete="email"
-          autoFocus
-          className="bg-muted text-md md:text-sm"
-          defaultValue={defaultEmail}
-          id="email"
-          name="email"
-          placeholder="user@acme.com"
-          required
-          type="email"
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <Label
-          className="font-normal text-zinc-600 dark:text-zinc-400"
-          htmlFor="password"
-        >
-          Password
-        </Label>
-
-        <Input
-          className="bg-muted text-md md:text-sm"
-          id="password"
-          name="password"
-          required
-          type="password"
-        />
-      </div>
-
       {children}
-    </form>
+
+      {(pending || isSuccessful) && (
+        <span className="absolute right-4 animate-spin">
+          <Loader2 className="h-4 w-4" />
+        </span>
+      )}
+
+      <output aria-live="polite" className="sr-only">
+        {pending || isSuccessful ? "Loading" : "Submit form"}
+      </output>
+    </Button>
   );
 }
