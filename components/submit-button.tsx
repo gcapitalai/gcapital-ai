@@ -1,38 +1,64 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
+import { Input } from "./input";
+import { Label } from "./label";
 
-import { LoaderIcon } from "@/components/icons";
-
-import { Button } from "./ui/button";
-
-export function SubmitButton({
+export function AuthForm({
+  action,
   children,
-  isSuccessful,
+  defaultEmail = "",
 }: {
+  action: (formData: FormData) => void | Promise<void>;
   children: React.ReactNode;
-  isSuccessful: boolean;
+  defaultEmail?: string;
 }) {
-  const { pending } = useFormStatus();
-
   return (
-    <Button
-      aria-disabled={pending || isSuccessful}
-      className="relative"
-      disabled={pending || isSuccessful}
-      type={pending ? "button" : "submit"}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        action(new FormData(e.currentTarget));
+      }}
+      className="flex flex-col gap-4 px-4 sm:px-16"
     >
+      <div className="flex flex-col gap-2">
+        <Label
+          className="font-normal text-zinc-600 dark:text-zinc-400"
+          htmlFor="email"
+        >
+          Email Address
+        </Label>
+
+        <Input
+          autoComplete="email"
+          autoFocus
+          className="bg-muted text-md md:text-sm"
+          defaultValue={defaultEmail}
+          id="email"
+          name="email"
+          placeholder="user@acme.com"
+          required
+          type="email"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label
+          className="font-normal text-zinc-600 dark:text-zinc-400"
+          htmlFor="password"
+        >
+          Password
+        </Label>
+
+        <Input
+          className="bg-muted text-md md:text-sm"
+          id="password"
+          name="password"
+          required
+          type="password"
+        />
+      </div>
+
       {children}
-
-      {(pending || isSuccessful) && (
-        <span className="absolute right-4 animate-spin">
-          <LoaderIcon />
-        </span>
-      )}
-
-      <output aria-live="polite" className="sr-only">
-        {pending || isSuccessful ? "Loading" : "Submit form"}
-      </output>
-    </Button>
+    </form>
   );
 }
